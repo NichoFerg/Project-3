@@ -45,4 +45,31 @@ The Following Steps were followed to complete the attack.
 8. Secure a user shell as the user whose password you cracked.
 9. Escalate to `root`.
 
-There were also 4 flags to discovered while finishing this attack. The attack can be summarized by viewing the Red Team: Summary of Operations.
+There were also 4 flags to be discovered during this attack. The attack can be summarized by viewing the Red Team: Summary of Operations.
+
+1. Using the command `nmap 192.168.1.*` We were able to see the entire scope of the network. Target 1 had an IP address of 192.168.1.110 and the following open ports:
+<details>
+    <summary>2. Click here to see open ports and services used by Target 1</summary>
+  <br>
+  
+  - Port 22: SSH
+  
+  - Port 80: HTTP  
+
+  - Port 111: rpcbind
+
+  - Port 159: netbios-ssn
+
+  - Port 445: microsoft-ds
+
+</details>
+  
+<br>
+
+3. We used the dirb command to brute force a directory list of the website, using the command `dirb http://192.168.1.110` we were not aware of the directory for the wordPress site but this gave us access to hidden directories and it was then able to locate `http://192.168.1.110/wordpress`.
+  Using google, we were then able to find a simple WordPress Security Scanner called **WPScan** to be able to enumerate the site.
+  Using the command `wpscan --url http://192.168.1.110/wordpress/ --enumerate u` we able to see the results we were looking for, two users for the site were identified 'Steven' and 'Michael'.
+
+4. Knowing that this was a vulnerable website we took a chance and started to guess password combos for the two users to gain access into the system via SSH. After discovering that michael was his own name as a password **(Bad Practice)** we able to gain access to the network using `ssh michael@192.168.1.105` and the password of 'michael'.
+
+5. Looking for 
